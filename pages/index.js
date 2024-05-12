@@ -1,4 +1,6 @@
 import Meetuplist from "../components/meetups/MeetupList";
+import { MongoClient } from "mongodb";
+
 const DUMMY_MEETUPS = [
   {
     id: "m1",
@@ -27,14 +29,31 @@ const Homepage = (props) => {
 };
 export async function getStaticProps() {
   // fetchin the data
+  const client = await MongoClient.connect(
+    "mongodb+srv://deep:wLx96Hj65FGYiQpn@cluster0.rpjyrmi.mongodb.net/meetups?retryWrites=true&w=majority&appName=Cluster0"
+  );
+  const db = client.db();
+  const meetupCollections = db.collection("meetups");
+// console.log
+  const final = await meetupCollections.find().toArray();
+  // console.log(final,'ye wal')
+  client.close();
   return {
-    props: { meetups: DUMMY_MEETUPS },
-    revalidate:10  //no of seconds nextjs will wait until it regenerate its inocoming request
+    props: {
+      meetups: final.map(meetup => ({
+        title: meetup.data.title,
+        id: meetup._id.toString(),
+        address: meetup.data.address,
+        description: meetup.data.description,
+        image:meetup.data.image
+      })),
+    },
+    revalidate: 1, //no of seconds nextjs will wait until it regenerate its inocoming request
   };
 }
 
 //  export async function getServerSideProps(context){
-//   //runs at every request 
+//   //runs at every request
 //   const req =context.req;
 //   const res= context.res;
 //   // fetch data from an api
