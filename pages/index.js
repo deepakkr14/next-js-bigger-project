@@ -29,8 +29,17 @@ export async function getStaticProps() {
   // fetchin the data
   return {
     props: { meetups: DUMMY_MEETUPS },
-    revalidate:10
+    revalidate:10  //no of seconds nextjs will wait until it regenerate its inocoming request
   };
 }
 
+//  export async function getServerSideProps(context){
+//   //runs at every request 
+//   const req =context.req;
+//   const res= context.res;
+//   // fetch data from an api
+//   return {
+//     props: {meetups:DUMMY_MEETUPS}
+//   }
+//  }
 export default Homepage;
