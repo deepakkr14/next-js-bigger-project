@@ -1,4 +1,3 @@
-import { useEffect ,useState} from "react";
 import Meetuplist from "../components/meetups/MeetupList";
 const DUMMY_MEETUPS = [
   {
@@ -18,16 +17,11 @@ const DUMMY_MEETUPS = [
     description: "This is a Second meetup!",
   },
 ];
-const Homepage = () => {
-  const [Metupdata,setMetupdata]=useState([]);
-  useEffect(()=>{
-    //some api fetch going on...
-    setMetupdata(DUMMY_MEETUPS)
-  })
+const Homepage = (props) => {
   return (
     <div>
       <h1>i am home page</h1>
-      <Meetuplist meetups={Metupdata} />
+      <Meetuplist meetups={props.meetups} />
     </div>
   );
 };
